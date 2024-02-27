@@ -5,7 +5,7 @@ const config = {
   entities: {
     rotar: {
       default: {
-        radiusRange: [15, 25],
+        radiusRange: [15, 35],
         lifeRange: [5, 5],
         speedRange: [-3, 3],
         attackCountRange: [8, 11]
@@ -19,7 +19,7 @@ const config = {
       }
     },
     game: {
-      entityCount: 8
+      entityCount: 5
     }
   }
 };
@@ -221,14 +221,16 @@ class Rotar extends Entity {
     this.dervishes.push(d);
   }
 
-  createOffspring() {
-    //if (this.life < 12) {
-    //  return null;
-    //}
+  createOffspring(force = false) {
 
-    if (this.dervishes.length < 12) {
-      return null;
+
+    console.log(force);
+    if(force == false) {
+      if (this.dervishes.length < 12) {
+       return null;
     }
+  }
+
 
     // Ensure x and y are valid numbers
     if (isNaN(this.x) || isNaN(this.y)) {
@@ -362,16 +364,33 @@ class Game {
     this.rotars = this.initRotars(config.entities.game.entityCount);
     this.lastTime = 0;
     this.loop = this.loop.bind(this);
-
-    this.canvas.addEventListener('dblclick', () => {
-      const dataUrl = this.canvas.toDataURL('image/png');
-      const link = document.createElement('a');
-      link.href = dataUrl;
-      link.download = 'canvas.png';
-      link.click();
-    });
-
+    this.canvas.addEventListener('dblclick', this.handleDoubleClick.bind(this));
+    
     requestAnimationFrame(this.loop);
+  }
+
+  handleDoubleClick(event) {
+    ////////console.log(event.clientX, event.clientY);
+    // Calculate the canvas position relative to the viewport
+    const rect = this.canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    // Check if any rotar was clicked
+    for (let i = 0; i < this.rotars.length; i++) {
+      const rotar = this.rotars[i];
+      const distance = Math.hypot(rotar.x - x, rotar.y - y);
+      if (distance < rotar.radius) {
+        console.log('Rotar was clicked');
+        // The rotar was clicked, create offspring
+        const offspring = rotar.createOffspring(true);
+        if (offspring) {
+          // Add the new offspring to the rotars array
+          this.rotars = this.rotars.concat(offspring);
+        }
+        break;
+      }
+    }
   }
 
   updateCanvasSize() {
@@ -402,7 +421,7 @@ class Game {
     let newRotars = [];
     this.rotars.forEach((rotar, index) => {
       rotar.gravitateTowards(this.rotars);
-      let offspring = rotar.createOffspring(this.rotars);
+      let offspring = rotar.createOffspring();
       if(offspring) {
        newRotars = newRotars.concat(offspring); // Flatten and add offspring
       }
