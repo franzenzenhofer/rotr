@@ -386,7 +386,7 @@ class Game {
       const dy = Math.abs(rotar.y - y);
 
       // Check if the click or tap occurred within the square that bounds the rotar
-      if (dx < rotar.radius && dy < rotar.radius) {
+      if (dx < rotar.radius+5 && dy < rotar.radius+5) {
         console.log('Rotar was clicked');
         // The rotar was clicked, create offspring
         const offspring = rotar.createOffspring(true);
