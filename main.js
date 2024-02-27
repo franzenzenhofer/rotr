@@ -230,7 +230,7 @@ class Rotar extends Entity {
        return null;
     }
     //only now a 50% chance
-    if(Math.random() < 0.2) {
+    if(Math.random() < 0.001) {
       return null;
     }
   }
