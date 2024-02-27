@@ -374,7 +374,6 @@ class Game {
   }
 
   handleDoubleClick(event) {
-    ////////console.log(event.clientX, event.clientY);
     // Calculate the canvas position relative to the viewport
     const rect = this.canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
@@ -383,8 +382,11 @@ class Game {
     // Check if any rotar was clicked
     for (let i = 0; i < this.rotars.length; i++) {
       const rotar = this.rotars[i];
-      const distance = Math.hypot(rotar.x - x, rotar.y - y);
-      if (distance < rotar.radius) {
+      const dx = Math.abs(rotar.x - x);
+      const dy = Math.abs(rotar.y - y);
+
+      // Check if the click or tap occurred within the square that bounds the rotar
+      if (dx < rotar.radius && dy < rotar.radius) {
         console.log('Rotar was clicked');
         // The rotar was clicked, create offspring
         const offspring = rotar.createOffspring(true);
