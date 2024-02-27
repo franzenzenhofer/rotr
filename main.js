@@ -368,7 +368,7 @@ class Game {
     this.rotars = this.initRotars(config.entities.game.entityCount);
     this.lastTime = 0;
     this.loop = this.loop.bind(this);
-    this.canvas.addEventListener('dblclick', this.handleDoubleClick.bind(this));
+    this.canvas.addEventListener('click', this.handleDoubleClick.bind(this));
     
     requestAnimationFrame(this.loop);
   }
