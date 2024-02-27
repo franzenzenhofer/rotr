@@ -229,6 +229,10 @@ class Rotar extends Entity {
       if (this.dervishes.length < 12) {
        return null;
     }
+    //only now a 50% chance
+    if(Math.random() < 0.2) {
+      return null;
+    }
   }
 
 
