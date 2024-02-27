@@ -5,7 +5,7 @@ const config = {
   entities: {
     rotar: {
       default: {
-        radiusRange: [15, 35],
+        radiusRange: [15, 25],
         lifeRange: [5, 5],
         speedRange: [-3, 3],
         attackCountRange: [8, 11]
